@@ -1,7 +1,6 @@
 // Generate Password Matching Criteria
 
 // Arrays of possible characters
-
 // Array of lowercase letters
 var lowerCaseChar = [
   'a','b','c','d','e','f','g','h','i','j','k','l','m',
@@ -28,30 +27,36 @@ function getPasswordCriteria() {
   // Get and store user input using prompts and confirms
   // Length of password prompt
   var passwordLength = parseInt(
-    prompt("How long would you like your password to be?")
+    prompt ("How long would you like your password to be?")
   );
+
   // Make sure the password is between 8 & 128 characters long
-  if (passwordLength < 8 || passwordLength > 128) {
-    alert("Password must be between 8 & 128 characters long.")
+  if (passwordLength < 8 || passwordLength > 128 || passwordLength === null || passwordLength === '') {
+    alert ("Password must be between 8 & 128 characters long.")
     return;
   }
+  if (isNaN(passwordLength) === true) {
+    alert ('Password length must be provided as a number.');
+    return;
+  }
+
   // Prompt for lowercase letters
-  var lowerCaseChar = confirm ("Choose 'OK' to include lowercase letters.");
+  var lowerCaseCharConfirm = confirm ("Choose 'OK' to include lowercase letters.");
 
   // Prompt for uppercase letters
-  var upperCaseChar = confirm ("Choose 'OK' to include uppercase letters.");
+  var upperCaseCharConfirm = confirm ("Choose 'OK' to include uppercase letters.");
 
   // Prompt for numeric values
-  var numericVal = confirm ("Choose 'OK' to include numbers.");
+  var numericValConfirm = confirm ("Choose 'OK' to include numbers.");
 
   // Prompt for special characters
-  var specialChar = confirm ("Choose 'OK' to include special characters.");
+  var specialCharConfirm = confirm ("Choose 'OK' to include special characters.");
 
   // Confirm that at least one character type was selected
-  if (lowerCaseChar === false,
-      upperCaseChar === false,
-      numericVal === false,
-      specialChar === false)
+  if (lowerCaseCharConfirm === false &&
+      upperCaseCharConfirm === false &&
+      numericValConfirm === false &&
+      specialCharConfirm === false)
       {
         alert("You must select one character type to continue.");
         return;
@@ -59,18 +64,18 @@ function getPasswordCriteria() {
   // Store user input
   var passwordCriteria = {
     passwordLength: passwordLength,
-    lowerCaseChar: lowerCaseChar,
-    upperCaseChar: upperCaseChar,
-    numericVal: numericVal,
-    specialChar: specialChar
+    lowerCaseCharConfirm: lowerCaseCharConfirm,
+    upperCaseCharConfirm: upperCaseCharConfirm,
+    numericValConfirm: numericValConfirm,
+    specialCharConfirm: specialCharConfirm
   };
   return passwordCriteria;
 }
 
 // Select characters randomly from array(s)
-function getRandom(array) {
-  var randChoice = Math.floor(Math.random() * array.length);
-  var randChar = array[randChoice];
+function getRandom(charArray) {
+  var randChoice = Math.floor(Math.random() * charArray.length);
+  var randChar = charArray[randChoice];
   return randChar;
 }
 
@@ -87,28 +92,42 @@ function generatePassword() {
   var chosenChar = [];
 
   // If criteria value returns true add possible characters then choose char randomly
-  if (criteria.lowerCaseChar) {
+  if (criteria.lowerCaseCharConfirm) {
     possibleChar = possibleChar.concat(lowerCaseChar);
     chosenChar.push(getRandom(lowerCaseChar));
   }
 
   // If criteria value returns true add possible characters then choose char randomly
-  if (criteria.upperCaseChar) {
+  if (criteria.upperCaseCharConfirm) {
     possibleChar = possibleChar.concat(upperCaseChar);
     chosenChar.push(getRandom(upperCaseChar));
   }
 
   // If criteria value returns true add possible characters then choose char randomly
-  if (criteria.numericVal) {
+  if (criteria.numericValConfirm) {
     possibleChar = possibleChar.concat(numericVal);
     chosenChar.push(getRandom(numericVal));
   }
 
   // If criteria value returns true add possible characters then choose char randomly
-  if (criteria.specialChar) {
+  if (criteria.specialCharConfirm) {
     possibleChar = possibleChar.concat(specialChar);
     chosenChar.push(getRandom(specialChar));
   }
+
+  // For loop to generate filler characters for password based on possible characters generated
+  for (var i = 0; i < criteria.passwordLength; i++) {
+    var possibleChar = getRandom(possibleChar);
+    genResults.push(possibleChar);
+  }
+
+  // Making sure criteria is met by adding chosen characters
+  for (var i = 0; i < chosenChar.length; i++) {
+    genResults[i] = chosenChar[i];
+  }
+
+  // Calls generated password and removes seperators preparing password to display for user with function "writePassword"
+  return genResults.join('');
 }
 
 // Get references to the #generate element
