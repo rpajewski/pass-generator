@@ -117,8 +117,8 @@ function generatePassword() {
 
   // For loop to generate filler characters for password based on possible characters generated
   for (var i = 0; i < criteria.passwordLength; i++) {
-    var possibleChar = getRandom(possibleChar);
-    genResults.push(possibleChar);
+    var possibleChars = getRandom(possibleChar);
+    genResults.push(possibleChars);
   }
 
   // Making sure criteria is met by adding chosen characters
