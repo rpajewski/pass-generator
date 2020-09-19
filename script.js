@@ -1,7 +1,3 @@
-// get and store user input using prompts and confirms
-// generate random numbers
-// select items from arrays
-// implement control flow using fuctions, iterations and condition statements
 // Generate Password Matching Criteria
 
 // Arrays of possible characters
@@ -29,6 +25,7 @@ var specialChar = [
 
 // When clicking generate button user is prompted for password criteria
 function getPasswordCriteria() {
+  // Get and store user input using prompts and confirms
   // Length of password prompt
   var passwordLength = parseInt(
     prompt("How long would you like your password to be?")
@@ -59,7 +56,59 @@ function getPasswordCriteria() {
         alert("You must select one character type to continue.");
         return;
       }
-    
+  // Store user input
+  var passwordCriteria = {
+    passwordLength: passwordLength,
+    lowerCaseChar: lowerCaseChar,
+    upperCaseChar: upperCaseChar,
+    numericVal: numericVal,
+    specialChar: specialChar
+  };
+  return passwordCriteria;
+}
+
+// Select characters randomly from array(s)
+function getRandom(array) {
+  var randChoice = Math.floor(Math.random() * array.length);
+  var randChar = array[randChoice];
+  return randChar;
+}
+
+// Generate password matching criteria
+function generatePassword() {
+  var criteria = getPasswordCriteria();
+  // Store generated results
+  var genResults = [];
+
+  // Array of possible characters to included based on user criteria
+  var possibleChar = [];
+
+  // Array to store chosen characters
+  var chosenChar = [];
+
+  // If criteria value returns true add possible characters then choose char randomly
+  if (criteria.lowerCaseChar) {
+    possibleChar = possibleChar.concat(lowerCaseChar);
+    chosenChar.push(getRandom(lowerCaseChar));
+  }
+
+  // If criteria value returns true add possible characters then choose char randomly
+  if (criteria.upperCaseChar) {
+    possibleChar = possibleChar.concat(upperCaseChar);
+    chosenChar.push(getRandom(upperCaseChar));
+  }
+
+  // If criteria value returns true add possible characters then choose char randomly
+  if (criteria.numericVal) {
+    possibleChar = possibleChar.concat(numericVal);
+    chosenChar.push(getRandom(numericVal));
+  }
+
+  // If criteria value returns true add possible characters then choose char randomly
+  if (criteria.specialChar) {
+    possibleChar = possibleChar.concat(specialChar);
+    chosenChar.push(getRandom(specialChar));
+  }
 }
 
 // Get references to the #generate element
